@@ -1,4 +1,4 @@
-package org.example.binaryTree;
+package org.example.stack;
 
 public class TreeNode {
     int val;
@@ -9,5 +9,9 @@ public class TreeNode {
     }
     public TreeNode(int x) {
         val = x;
+    }
+    @Override
+    public String toString() {
+        return "Value: " + val ;
     }
 }
