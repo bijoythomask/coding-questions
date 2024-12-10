@@ -17,13 +17,20 @@ package org.example.binaryTree;
 public class ConvertSortedArraytoBinarySearchTree {
     public static void main(String[] args) {
         int[] nums = {-10, -3, 0, 5, 9};
-        TreeNode root = sortedArrayToBST(nums);
-        System.out.println(root);
+        TreeNode root = helper(nums,0, nums.length - 1);
+        inOrderTranversal(root);
     }
 
-    private static TreeNode sortedArrayToBST(int[] nums) {
-        return helper(nums, 0, nums.length - 1);
+    public static void inOrderTranversal(TreeNode root) {
+        if (root == null) {
+            return;
+        }
+        inOrderTranversal(root.left);
+        System.out.print( " " + root.val);
+        inOrderTranversal(root.right);
     }
+
+
 
     private static TreeNode helper(int[] nums, int left, int right) {
         if (left > right) {
