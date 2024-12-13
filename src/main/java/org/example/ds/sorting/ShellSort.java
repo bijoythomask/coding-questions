@@ -1,4 +1,4 @@
-package org.example.sorting;
+package org.example.ds.sorting;
 
 /**
  * Shell Sort is an in-place comparison sort. It can be seen as either a generalization of sorting by exchange (bubble sort) or sorting by insertion (insertion sort).

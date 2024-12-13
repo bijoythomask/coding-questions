@@ -1,4 +1,4 @@
-package org.example.sorting;
+package org.example.ds.sorting;
 
 /**
  * Insertion Sort is a simple sorting algorithm that builds the final sorted array (or list) one item at a time.

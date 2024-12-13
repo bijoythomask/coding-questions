@@ -1,4 +1,4 @@
-package org.example.sorting;
+package org.example.ds.sorting;
 
 /**
  * Selection Sort is an in-place comparison sorting algorithm that divides the input list into two parts: the sublist of items already sorted and the sublist of items remaining to be sorted.

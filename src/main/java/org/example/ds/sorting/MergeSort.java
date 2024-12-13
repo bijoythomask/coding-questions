@@ -1,4 +1,4 @@
-package org.example.sorting;
+package org.example.ds.sorting;
 
 /**
  * Merge Sort is an efficient, stable, comparison-based, divide and conquer sorting algorithm.

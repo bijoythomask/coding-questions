@@ -1,4 +1,4 @@
-package org.example.sorting;
+package org.example.ds.sorting;
 /**
  * Quick Sort is an efficient, in-place, comparison-based sorting algorithm.
  * Quick Sort is a divide and conquer algorithm that was invented by Tony Hoare in 1960.
