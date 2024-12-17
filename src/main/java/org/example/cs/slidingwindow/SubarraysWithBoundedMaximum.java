@@ -1,4 +1,4 @@
-package org.example.cs.other;
+package org.example.cs.slidingwindow;
 
 /**
  * Given an integer array nums and two integers left and right, return the number of contiguous non-empty sub arrays
