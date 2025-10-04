@@ -1,13 +1,7 @@
 package org.example.ds.sorting;
 
-/** what is bubble sort?
- * Bubble Sort is the simplest sorting algorithm that works by repeatedly swapping the adjacent elements if they are in wrong order.
- * It is not suitable for large datasets as its average and worst case complexity are of Ο(n2) where n is the number of items.
- * It is a comparison-based algorithm in which each pair of adjacent elements is compared and the elements are swapped if they are not in order.
- * This algorithm is not suitable for large data sets as its average and worst case complexity are of Ο(n2) where n is the number of items.
- * Bubble sort is stable and adaptive.
- * It is stable because it does not change the relative order of elements with equal keys.
- * It is adaptive because it takes advantage of existing order in its input.
+/**
+ * See detailed documentation in README.md in this folder.
  */
 public class BubbleSort {
     public static void main(String[] args) {
