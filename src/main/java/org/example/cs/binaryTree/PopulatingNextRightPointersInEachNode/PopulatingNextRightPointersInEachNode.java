@@ -3,10 +3,9 @@ package org.example.cs.binaryTree.PopulatingNextRightPointersInEachNode;
 import org.example.cs.binaryTree.Node.*;
 
 public class PopulatingNextRightPointersInEachNode {
-    public Node connect(Node root) {
-        if (root == null) return null;
+    public void connect(Node root) {
+        if (root == null) return;
         connect(root.left, root.right);
-        return root;
     }
     private void connect(Node left, Node right) {
         if (left == null || right == null) return;

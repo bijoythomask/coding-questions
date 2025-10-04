@@ -1,4 +1,4 @@
-package org.example.cs.slidingwindow;
+package org.example.cs.slidingwindow.SubarraysWithBoundedMaximum;
 
 public class SubarraysWithBoundedMaximum {
     public int numSubarrayBoundedMax(int[] nums, int left, int right) {

@@ -1,4 +1,4 @@
-package org.example.cs.slidingwindow;
+package org.example.cs.slidingwindow.DuplicateII;
 
 import java.util.HashMap;
 
