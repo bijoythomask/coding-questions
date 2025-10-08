@@ -1,4 +1,4 @@
-package org.example.cs.slidingwindow;
+package org.example.cs.slidingwindow.LongestRepeatingCharacterReplacement;
 
 public class LongestRepeatingCharacterReplacement {
     public int characterReplacement(String s, int k) {

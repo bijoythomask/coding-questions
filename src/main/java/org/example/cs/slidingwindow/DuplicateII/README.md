@@ -34,3 +34,19 @@ This approach is efficient because it processes the array in a single pass, givi
 - **Input:** `nums = [1, 2, 3, 1, 2, 3]`, `k = 2`
 - **Output:** `false`
 - **Explanation:** While there are duplicates, none of them have an index difference of 2 or less. For the number `1`, the difference is `3`. For `2`, it's `3`. For `3`, it's `3`.
+
+## Alternate Approach: Two Pointers
+
+While the HashMap approach is efficient, another way to think about this problem is by using a two-pointer or "sliding window" technique. This approach is more intuitive if you are familiar with the sliding window pattern.
+
+The algorithm works as follows:
+1.  Initialize two pointers, `left` and `right`, both at the beginning of the array (`left = 0`, `right = 0`).
+2.  Create a `HashSet` to keep track of the elements within the current window (from `left` to `right`).
+3.  Move the `right` pointer from the beginning to the end of the array.
+4.  For each element `nums[right]`:
+    -   If the distance between the pointers exceeds `k` (i.e., `right - left > k`), remove the element at the `left` pointer from the `HashSet` and increment `left`. This slides the window forward.
+    -   Attempt to add `nums[right]` to the `HashSet`.
+    -   If `add` returns `false`, it means the element is already in the set, and since we've maintained the window size to be at most `k`, we have found a duplicate within the required distance. Return `true`.
+5.  If the loop completes, it means no duplicates were found within any window of size `k`, so return `false`.
+
+This approach also has a time complexity of O(n) because each element is visited by both pointers once. The space complexity is O(k) in the worst case, as the `HashSet` stores at most `k+1` elements.

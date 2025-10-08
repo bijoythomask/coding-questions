@@ -1,4 +1,4 @@
-package org.example.cs.slidingwindow;
+package org.example.cs.slidingwindow.FindKClosestElements;
 
 import java.util.ArrayList;
 import java.util.List;

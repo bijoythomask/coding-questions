@@ -1,6 +1,8 @@
 package org.example.cs.slidingwindow.DuplicateII;
 
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 public class DuplicateII {
     public boolean containsNearbyDuplicate(int[] nums, int k) {
@@ -14,9 +16,25 @@ public class DuplicateII {
         return false;
     }
 
+    public boolean containsNearbyDuplicateTwoPointers(int[] nums, int k) {
+        Set<Integer> window = new HashSet<>();
+        int left = 0;
+        for (int right = 0; right < nums.length; right++) {
+            if (right - left > k) {
+                window.remove(nums[left]);
+                left++;
+            }
+            if (!window.add(nums[right])) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public static void main(String[] args) {
         DuplicateII solver = new DuplicateII();
         int[] nums = {1, 2, 3, 1};
-        System.out.println(solver.containsNearbyDuplicate(nums, 3)); // true
+        System.out.println("HashMap approach: " + solver.containsNearbyDuplicate(nums, 3)); // true
+        System.out.println("Two-pointer approach: " + solver.containsNearbyDuplicateTwoPointers(nums, 3)); // true
     }
 }
