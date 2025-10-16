@@ -192,3 +192,37 @@ Let's trace the algorithm with the example graph from the code, with `source = 0
     -   `O(V)` for the `dist` array.
     -   `O(E)` for the adjacency list representation of the graph.
     -   `O(V)` in the worst case for the priority queue.
+
+## 6. Graph Visualization
+
+You can visualize the example graph by using a supported Markdown renderer (like GitHub). Below are two common formats.
+
+### Mermaid Syntax
+
+```mermaid
+graph LR
+    0 -- "2" --> 1
+    0 -- "4" --> 2
+    1 -- "1" --> 2
+    1 -- "7" --> 3
+    2 -- "3" --> 4
+    3 -- "1" --> 4
+```
+
+### DOT Language
+
+Alternatively, you can use the DOT language with an online Graphviz editor (like [dreampuf.github.io/GraphvizOnline/](https://dreampuf.github.io/GraphvizOnline/)).
+
+```dot
+digraph G {
+  rankdir=LR; // Makes the graph flow from left to right
+  node [shape = circle];
+
+  0 -> 1 [label="2"];
+  0 -> 2 [label="4"];
+  1 -> 2 [label="1"];
+  1 -> 3 [label="7"];
+  2 -> 4 [label="3"];
+  3 -> 4 [label="1"];
+}
+```

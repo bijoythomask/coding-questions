@@ -56,7 +56,7 @@ public class Dijkstra {
                 int v = edge.to;
                 int weight = edge.weight;
 
-                if (dist[u] != Integer.MAX_VALUE && dist[u] + weight < dist[v]) {
+                if (dist[u] + weight < dist[v]) {
                     dist[v] = dist[u] + weight;
                     pq.add(new Pair(dist[v], v));
                 }
