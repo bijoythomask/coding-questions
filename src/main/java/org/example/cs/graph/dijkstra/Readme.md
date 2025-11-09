@@ -32,7 +32,37 @@ The most efficient way to implement this is by using a **Priority Queue**.
 4.  **Termination**:
     -   The algorithm terminates when the priority queue is empty. The `dist` array now contains the shortest path distances from the source to all other nodes.
 
-## 3. Java Implementation
+## 3. Complexity Analysis
+
+-   **Time Complexity**: **O(E log V)**
+    -   `V` is the number of vertices (nodes), and `E` is the number of edges.
+    -   Each vertex is added to the priority queue at most once for each time its distance is updated. Since we only update distances when we find a shorter path, this happens at most `E` times in total across all vertices.
+    -   Each operation on the priority queue (insertion and extraction) takes `O(log V)` time.
+-   **Space Complexity**: **O(V + E)**
+    -   `O(V)` for the `dist` array.
+    -   `O(E)` for the adjacency list representation of the graph.
+    -   `O(V)` in the worst case for the priority queue.
+
+## 4. Alternate Approach: Using a Simple Array
+
+A simpler, but less efficient, implementation of Dijkstra's algorithm uses an array to find the minimum distance node in each step instead of a priority queue.
+
+### Algorithm Steps:
+1.  **Initialization**:
+    -   Create a `dist` array and initialize all values to infinity, with `dist[source] = 0`.
+    -   Create a boolean `visited` array of size `V`, initialized to `false`.
+2.  **Main Loop**: Loop `V` times:
+    -   Find the unvisited node `u` with the smallest `dist` value. This requires a linear scan through the `dist` array.
+    -   Mark `u` as visited (`visited[u] = true`).
+    -   For each neighbor `v` of `u`, perform the **relaxation** step: if `dist[u] + weight < dist[v]`, update `dist[v] = dist[u] + weight`.
+
+### Complexity Analysis of Alternate Approach:
+-   **Time Complexity**: **O(V^2)**. The main loop runs `V` times, and inside it, finding the minimum distance unvisited node takes `O(V)` time.
+-   **Space Complexity**: **O(V + E)** for the graph, `dist` array, and `visited` array.
+
+This `O(V^2)` approach is easier to implement but is only suitable for dense graphs where `E` is close to `V^2`. For sparse graphs, the `O(E log V)` priority queue implementation is significantly faster.
+
+## 5. Java Implementation
 
 ```java
 import java.util.*;
@@ -100,44 +130,12 @@ class Dijkstra {
 
         return dist;
     }
-
-    public static void main(String[] args) {
-        int n = 5; // Number of nodes
-        int source = 0;
-
-        List<List<Edge>> adj = new ArrayList<>();
-        for (int i = 0; i < n; i++) {
-            adj.add(new ArrayList<>());
-        }
-
-        // Example Graph
-        adj.get(0).add(new Edge(1, 2));
-        adj.get(0).add(new Edge(2, 4));
-        adj.get(1).add(new Edge(2, 1));
-        adj.get(1).add(new Edge(3, 7));
-        adj.get(2).add(new Edge(4, 3));
-        adj.get(3).add(new Edge(4, 1));
-
-        int[] shortestDistances = dijkstra(n, adj, source);
-
-        System.out.println("Shortest distances from source node " + source + ":");
-        for (int i = 0; i < n; i++) {
-            System.out.println("Node " + i + ": " + (shortestDistances[i] == Integer.MAX_VALUE ? "Infinity" : shortestDistances[i]));
-        }
-        // Expected Output:
-        // Node 0: 0
-        // Node 1: 2
-        // Node 2: 3
-        // Node 3: 9
-        // Node 4: 6
-    }
 }
 ```
 
-## 4. Example Walkthrough
+## 6. Example Walkthrough
 
-Let's trace the algorithm with the example graph from the code, with `source = 0`.
-
+Let's trace the algorithm with an example graph, with `source = 0`.
 -   **Nodes**: 0, 1, 2, 3, 4
 -   **Edges**: (0,1,2), (0,2,4), (1,2,1), (1,3,7), (2,4,3), (3,4,1)
 
@@ -159,70 +157,4 @@ Let's trace the algorithm with the example graph from the code, with `source = 0
     -   Path to 3: `dist[1] + 7 = 9`. Update `dist[3] = 9`. Push `{9, 3}` to `pq`.
 -   `dist` = `[0, 2, 3, 9, ∞]`, `pq` = `[{3, 2}, {4, 2}, {9, 3}]`
 
-**Iteration 3**:
--   Extract `{3, 2}` from `pq`.
--   Neighbor of 2 is 4.
-    -   Path to 4: `dist[2] + 3 = 6`. Update `dist[4] = 6`. Push `{6, 4}` to `pq`.
--   `dist` = `[0, 2, 3, 9, 6]`, `pq` = `[{4, 2}, {6, 4}, {9, 3}]`
-
-**Iteration 4**:
--   Extract `{4, 2}` from `pq`.
--   `d=4` is greater than `dist[2]=3`. We skip this.
-
-**Iteration 5**:
--   Extract `{6, 4}` from `pq`.
--   Node 4 has no outgoing edges.
--   `dist` remains `[0, 2, 3, 9, 6]`.
-
-**Iteration 6**:
--   Extract `{9, 3}` from `pq`.
--   Neighbor of 3 is 4.
-    -   Path to 4: `dist[3] + 1 = 10`. This is not `< dist[4]` (which is 6). No update.
-
-**Termination**:
--   The `pq` is now empty. The final `dist` array is `[0, 2, 3, 9, 6]`.
-
-## 5. Complexity Analysis
-
--   **Time Complexity**: **O(E log V)**
-    -   `V` is the number of vertices (nodes), and `E` is the number of edges.
-    -   Each vertex is added to the priority queue at most once for each time its distance is updated. Since we only update distances when we find a shorter path, this happens at most `E` times in total across all vertices.
-    -   Each operation on the priority queue (insertion and extraction) takes `O(log V)` time.
--   **Space Complexity**: **O(V + E)**
-    -   `O(V)` for the `dist` array.
-    -   `O(E)` for the adjacency list representation of the graph.
-    -   `O(V)` in the worst case for the priority queue.
-
-## 6. Graph Visualization
-
-You can visualize the example graph by using a supported Markdown renderer (like GitHub). Below are two common formats.
-
-### Mermaid Syntax
-
-```mermaid
-graph LR
-    0 -- "2" --> 1
-    0 -- "4" --> 2
-    1 -- "1" --> 2
-    1 -- "7" --> 3
-    2 -- "3" --> 4
-    3 -- "1" --> 4
-```
-
-### DOT Language
-
-Alternatively, you can use the DOT language with an online Graphviz editor (like [dreampuf.github.io/GraphvizOnline/](https://dreampuf.github.io/GraphvizOnline/)).
-
-```dot
-digraph G {
-  rankdir=LR; // Makes the graph flow from left to right
-  node [shape = circle];
-
-  0 -> 1 [label="2"];
-  0 -> 2 [label="4"];
-  1 -> 2 [label="1"];
-  1 -> 3 [label="7"];
-  2 -> 4 [label="3"];
-  3 -> 4 [label="1"];
-}
-```
+... and so on, until the `pq` is empty. The final `dist` array will be `[0, 2, 3, 9, 6]`.
