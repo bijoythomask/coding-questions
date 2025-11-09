@@ -11,56 +11,59 @@ Design a simplified version of Twitter where users can post tweets, follow/unfol
 
 ## Solution Approach
 
-We will use a combination of `HashMap` and a `PriorityQueue` (min-heap) to solve this problem efficiently.
+We will use a combination of `HashMap` and a `PriorityQueue` (max-heap) to solve this problem efficiently.
 
 1.  **Data Structures:**
-    *   A `HashMap<Integer, List<Tweet>> userTweets` to store the tweets for each user. The key is the `userId` and the value is a list of `Tweet` objects.
-    *   A `HashMap<Integer, Set<Integer>> following` to store the users that a user follows. The key is the `followerId` and the value is a set of `followeeId`s.
-    *   A global `timestamp` to maintain the order of the tweets.
-    *   A `Tweet` class to store the `tweetId` and its `timestamp`.
+    *   A global `timestamp` counter to order tweets chronologically.
+    *   A `HashMap<Integer, User>` to store user-specific data.
+    *   A `User` class containing:
+        *   A `Set<Integer>` of `followees` to store the IDs of users they follow.
+        *   A `Tweet` head reference to a singly-linked list of their own tweets.
+    *   A `Tweet` class containing the `tweetId`, `timestamp`, and a `next` reference to the next tweet.
 
 2.  **`postTweet(userId, tweetId)`:**
-    *   When a user posts a tweet, we create a new `Tweet` object with the `tweetId` and the current `timestamp`.
-    *   We add this tweet to the `userTweets` map for the given `userId`.
+    *   When a user posts, we create a new `Tweet` object with the `tweetId` and the current global `timestamp`.
+    *   This new tweet becomes the new head of the user's tweet linked list. This is an O(1) operation.
 
 3.  **`getNewsFeed(userId)`:**
-    *   This is the most complex part. We need to get the 10 most recent tweets from the user and the users they follow.
-    *   We will use a `PriorityQueue` (min-heap) of size 10 to keep track of the 10 most recent tweets seen so far. The heap will be ordered by the `timestamp` of the tweets.
-    *   First, get the set of users the current user follows from the `following` map.
-    *   Get the tweets of the current user and add them to a list.
-    *   For each followed user, get their tweets and add them to the list.
-    *   Iterate through the list of tweets and add them to the `PriorityQueue`. If the size of the heap exceeds 10, we remove the tweet with the smallest `timestamp` (the oldest tweet).
-    *   After iterating through all the tweets, the `PriorityQueue` will contain the 10 most recent tweets. We can then extract the `tweetId`s from the heap and return them in the correct order (most recent to least recent).
+    *   This is the most complex part. We need to merge the k most recent tweets from the user and all their followees. A **max-heap** is perfect for this.
+    *   First, get the set of users the current user follows.
+    *   Create a `PriorityQueue` (max-heap) ordered by `timestamp` in descending order.
+    *   For the user and each of their followees, if they have posted any tweets, add the head of their tweet linked list to the max-heap.
+    *   Now, loop 10 times (or until the heap is empty) to get the top 10 tweets:
+        *   `poll()` the tweet with the largest timestamp from the heap. This is the most recent tweet across all considered users.
+        *   Add its `tweetId` to the result list.
+        *   If this tweet has a `next` tweet in its linked list, add the `next` tweet to the heap. This ensures we continue to consider tweets from the user who posted the most recent one.
+    *   This process is a k-way merge, which efficiently finds the most recent tweets without having to look at every single tweet from every followed user.
 
 4.  **`follow(followerId, followeeId)`:**
-    *   We add the `followeeId` to the set of followed users for the `followerId` in the `following` map.
+    *   Add the `followeeId` to the set of followed users for the `followerId`.
 
 5.  **`unfollow(followerId, followeeId)`:**
-    *   We remove the `followeeId` from the set of followed users for the `followerId` in the `following` map.
+    *   Remove the `followeeId` from the set of followed users for the `followerId`.
+
+## Complexity Analysis
+-   `postTweet`: O(1).
+-   `follow`/`unfollow`: O(1).
+-   `getNewsFeed`: O(K * log(F)), where K is the number of tweets to retrieve (10) and F is the number of followees. The heap size is at most F+1. We perform K poll/add operations.
 
 ## Example
 
 ```java
 Twitter twitter = new Twitter();
-
-// User 1 posts a new tweet (id = 5).
-twitter.postTweet(1, 5);
-
-// User 1's news feed should return [5].
-twitter.getNewsFeed(1);
-
-// User 1 follows user 2.
-twitter.follow(1, 2);
-
-// User 2 posts a new tweet (id = 6).
-twitter.postTweet(2, 6);
-
-// User 1's news feed should return [6, 5].
-twitter.getNewsFeed(1);
-
-// User 1 unfollows user 2.
-twitter.unfollow(1, 2);
-
-// User 1's news feed should now return [5].
-twitter.getNewsFeed(1);
+twitter.postTweet(1, 5); // User 1 posts a new tweet (id = 5).
+twitter.getNewsFeed(1); // -> [5]
+twitter.follow(1, 2); // User 1 follows user 2.
+twitter.postTweet(2, 6); // User 2 posts a new tweet (id = 6).
+twitter.getNewsFeed(1); // -> [6, 5]
+twitter.unfollow(1, 2); // User 1 unfollows user 2.
+twitter.getNewsFeed(1); // -> [5]
 ```
+
+## Alternate Approach: Brute-Force Retrieval
+A simpler but less efficient way to implement `getNewsFeed` would be:
+1.  Gather all tweets from the user and all of their followees into a single list.
+2.  Sort this entire list of tweets by timestamp in descending order.
+3.  Return the first 10 tweets from the sorted list.
+
+This is much slower, with a complexity of O(T log T), where T is the total number of tweets from all followed users, which can be very large. The heap-based k-way merge approach is significantly more efficient.

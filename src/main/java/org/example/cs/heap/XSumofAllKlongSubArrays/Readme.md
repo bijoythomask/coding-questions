@@ -1,4 +1,4 @@
-# Sum of All k-length Subarrays
+# Sum of All K-length Subarrays
 
 ## Problem Statement
 
@@ -17,6 +17,10 @@ A more efficient approach is to use a **sliding window**.
 3.  **Iteration**: We repeat this process until the window has moved through the entire array.
 
 This approach has a time complexity of **O(N)** because we iterate through the array only once. The space complexity is **O(1)** if we don't count the space for the output list.
+
+## Complexity Analysis
+-   **Time Complexity:** O(N), where N is the number of elements in the array. We iterate through the array only once.
+-   **Space Complexity:** O(1) (excluding the space for the output list).
 
 ## Example
 
@@ -44,3 +48,20 @@ This approach has a time complexity of **O(N)** because we iterate through the a
     *   Result: `[6, 9, 12, 15]`
 
 The final list of sums is `[6, 9, 12, 15]`.
+
+## Alternate Approach: Brute Force
+A brute-force approach would involve iterating through all possible starting positions for a subarray of length `k` and then summing the elements within each subarray.
+
+1.  Initialize an empty list `results`.
+2.  Iterate `i` from `0` to `nums.length - k`.
+3.  For each `i`, calculate the sum of elements from `nums[i]` to `nums[i + k - 1]`.
+4.  Add this sum to `results`.
+
+### Complexity
+-   **Time Complexity:** O(N * K). For each of the `N - K + 1` subarrays, we sum `K` elements.
+-   **Space Complexity:** O(1) (excluding the space for the output list).
+
+This approach is less efficient than the sliding window method, especially for larger `K`.
+
+## Note on Folder Placement
+While the most efficient solution for finding the sum of k-length subarrays is the sliding window technique (which does not typically involve a heap), this problem might be grouped under the 'heap' category for contextual reasons. Many other sliding window problems, such as finding the maximum or minimum element in a sliding window, *do* leverage heaps (or deques) for optimal performance. This problem serves as a good contrast, demonstrating when a simpler O(N) sliding window is sufficient.
