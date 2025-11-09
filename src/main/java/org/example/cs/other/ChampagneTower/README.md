@@ -19,7 +19,7 @@ This problem can be modeled as a simulation of champagne flowing down the pyrami
     -   Pour all the initial champagne into the top glass: `dp[0][0] = poured`.
 
 2.  **Simulation Loop**:
-    -   Iterate through the rows from `i = 0` to `99`.
+    -   Iterate through the rows from `i = 0` to `query_row`. We only need to simulate up to the `query_row` because glasses below it won't affect the target glass.
     -   For each row, iterate through the glasses from `j = 0` to `i`.
     -   For each glass `dp[i][j]`, check if it has overflowed. A glass overflows if the amount of champagne in it is greater than 1.
         -   If `dp[i][j] > 1`:
@@ -27,10 +27,10 @@ This problem can be modeled as a simulation of champagne flowing down the pyrami
             -   Distribute this `excess` equally to the two glasses below it:
                 -   `dp[i + 1][j] += excess / 2.0`
                 -   `dp[i + 1][j + 1] += excess / 2.0`
-            -   After the overflow is distributed, the current glass `dp[i][j]` is now full, so its level is capped at `1`.
+            -   The current glass `dp[i][j]` is now considered full for its own calculation, but its value in `dp` might still be `> 1` if we don't explicitly cap it. The crucial part is that only the *excess* flows down.
 
 3.  **Result**:
-    -   After the simulation is complete, the value `dp[query_row][query_glass]` will hold the amount of champagne in the target glass. Since a glass cannot be more than full, the final answer is `min(1.0, dp[query_row][query_glass])`. The provided code handles this implicitly because it only returns the final value after all overflows have been propagated downwards.
+    -   After the simulation is complete, the value `dp[query_row][query_glass]` will hold the total amount of champagne that has flowed *into* the target glass. Since a glass cannot be more than full, the final answer is `min(1.0, dp[query_row][query_glass])`. The provided code implicitly handles this by returning the value, which will be `1.0` if it's full or the fraction if it's not.
 
 ### Code Implementation
 
@@ -40,20 +40,18 @@ public class ChampagneTower {
         double[][] dp = new double[101][101];
         dp[0][0] = poured;
 
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < query_row + 1; i++) { // Only need to go up to query_row
             for (int j = 0; j <= i; j++) {
                 if (dp[i][j] > 1) {
-                    // Distribute the excess to the two glasses below
                     double excess = dp[i][j] - 1;
                     dp[i + 1][j] += excess / 2.0;
                     dp[i + 1][j + 1] += excess / 2.0;
-                    // The current glass is now full
-                    dp[i][j] = 1.0;
+                    // No need to set dp[i][j] = 1.0 here, as only excess matters for next row
                 }
             }
         }
 
-        return dp[query_row][query_glass];
+        return Math.min(1.0, dp[query_row][query_glass]); // Cap at 1.0
     }
 }
 ```
@@ -73,9 +71,8 @@ Let's trace with `poured = 2`, `query_row = 1`, `query_glass = 1`.
         -   `excess = 2 - 1 = 1`.
         -   `dp[1][0] += 1 / 2.0`  (becomes 0.5)
         -   `dp[1][1] += 1 / 2.0`  (becomes 0.5)
-        -   `dp[0][0]` is set to `1`.
     -   After row 0, `dp` looks like:
-        -   `dp[0][0] = 1`
+        -   `dp[0][0] = 2` (value not capped in `dp` array, but only excess used)
         -   `dp[1][0] = 0.5`
         -   `dp[1][1] = 0.5`
 
@@ -83,13 +80,34 @@ Let's trace with `poured = 2`, `query_row = 1`, `query_glass = 1`.
     -   `j = 0`: `dp[1][0]` is `0.5`, which is not `> 1`. Nothing happens.
     -   `j = 1`: `dp[1][1]` is `0.5`, which is not `> 1`. Nothing happens.
 
--   The loops continue, but no more champagne will flow down from these glasses.
+-   The loops continue up to `query_row`.
 
 **Result**:
--   The function returns `dp[query_row][query_glass]`, which is `dp[1][1]`.
+-   The function returns `Math.min(1.0, dp[query_row][query_glass])`, which is `Math.min(1.0, dp[1][1])`.
 -   The final value is `0.5`.
 
 ## 4. Complexity Analysis
 
--   **Time Complexity**: **O(R^2)**, where `R` is the number of rows (fixed at 100 in this problem). We iterate through each glass in the pyramid approximately once.
--   **Space Complexity**: **O(R^2)**, for the `dp` table used to store the state of the champagne in each glass.
+-   **Time Complexity**: **O(query_row^2)**. We iterate through each glass up to the `query_row`. Since the number of glasses in a row `i` is `i+1`, the total number of glasses processed is approximately `query_row * (query_row + 1) / 2`.
+-   **Space Complexity**: **O(query_row^2)**, for the `dp` table.
+
+## 5. Alternate Approach: Space-Optimized Dynamic Programming
+We can optimize the space complexity to O(query_row) by observing that to calculate the values for the current row `i`, we only need the values from the previous row `i-1`.
+
+1.  **Initialization**:
+    -   Create a 1D array `dp` of size `query_row + 1`.
+    -   Set `dp[0] = poured`.
+2.  **Simulation Loop**:
+    -   Iterate through the rows from `i = 0` to `query_row - 1`.
+    -   For each row `i`, create a new 1D array `next_row_dp` of size `query_row + 1` (or iterate `dp` in reverse).
+    -   Iterate `j` from `i` down to `0` (important to iterate in reverse if updating `dp` in place, or use a `next_row_dp` array):
+        -   If `dp[j] > 1`:
+            -   `excess = dp[j] - 1`.
+            -   `next_row_dp[j] += excess / 2.0`.
+            -   `next_row_dp[j + 1] += excess / 2.0`.
+    -   Update `dp = next_row_dp` for the next iteration.
+3.  **Result**: Return `Math.min(1.0, dp[query_glass])`.
+
+### Complexity of Alternate Approach
+-   **Time Complexity**: O(query_row^2), same as the 2D DP.
+-   **Space Complexity**: O(query_row), as we only need to store two rows (or one row if updated carefully in reverse).

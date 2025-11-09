@@ -1,4 +1,4 @@
-package org.example.cs.twopointers;
+package org.example.cs.twopointers.AssignCookies;
 
 import java.util.Arrays;
 
