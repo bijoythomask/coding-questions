@@ -18,7 +18,8 @@ The problem can be solved by simulating the process described. A straightforward
 
 1.  **Sort Each Row**: For each row in the grid, sort the elements in ascending order.
 
-2.  **Iterate Through Columns**: After sorting, the largest elements will be in the last column, the second largest in the second-to-last column, and so on. We can iterate through the columns from right to left (from `n-1` down to `0`).
+2.  **Iterate Through Columns**: After sorting, the largest elements will be in the last column, a
+nd so on. We can iterate through the columns from right to left (from `n-1` down to `0`).
 
 3.  **Find Maximum in Column**: In each iteration `j`, the elements `grid[i][j]` represent the largest remaining values in each row `i`. We find the maximum value among all `grid[i][j]` for the current column `j`.
 
@@ -53,3 +54,20 @@ This approach has a time complexity of **O(m * n log n)** due to sorting each of
     *   `score = 7 + 1 = 8`
 
 The final score is `8`.
+
+## Alternate Approach: Using Priority Queues
+
+An alternative approach is to use a priority queue for each row to efficiently find the greatest value.
+
+1.  **Initialize Priority Queues**: For each row, create a priority queue (max-heap) and insert all the elements of that row into it. This will take **O(m * n log n)** time.
+
+2.  **Simulate the Process**:
+    *   Initialize `score = 0`.
+    *   Perform the operation `n` times (the number of columns).
+    *   In each step, find the maximum value among the top elements of all priority queues.
+    *   Add this maximum value to the `score`.
+    *   Remove the top element from each priority queue.
+
+3.  **Return Score**: After `n` iterations, return the total `score`.
+
+This approach has the same time complexity as the sorting approach but might be more intuitive to some, as it directly simulates the process of finding and removing the greatest element from each row. The space complexity would be **O(m * n)** to store the elements in the priority queues.

@@ -32,3 +32,16 @@ This approach has a time complexity of **O(H)**, where H is the height of the tr
 6.  `3.714286 > 3`, move to the right child, which is null.
 
 Traversal ends. The closest value is `4`.
+
+## Alternate Approach: Recursive Traversal
+
+A recursive approach can also be used to solve this problem. A helper function can be defined that takes the current node and the target as input.
+
+1.  **Base Case**: If the current node is null, return the `closest` value found so far.
+2.  **Update Closest**: Compare the current node's value with the `closest` value found so far and update `closest` if the current node is closer to the target.
+3.  **Recursive Step**:
+    *   If the target is less than the current node's value, recursively call the helper function on the left child.
+    *   If the target is greater than the current node's value, recursively call the helper function on the right child.
+    *   If the target is equal to the current node's value, return the current node's value.
+
+This approach also has a time complexity of **O(H)**, but the space complexity is **O(H)** due to the recursion stack.

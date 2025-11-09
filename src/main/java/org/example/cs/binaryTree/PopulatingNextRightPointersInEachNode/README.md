@@ -33,6 +33,23 @@ After running the algorithm, the next pointers will be:
 - 6.next -> 7
 - 7.next -> null
 
+## Alternate Approach: Level Order Traversal
+
+An alternative solution uses a queue-based level order traversal. This approach iterates through the tree level by level, connecting each node to its right neighbor.
+
+1.  Start with the root node in a queue.
+2.  While the queue is not empty, get the number of nodes at the current level.
+3.  Iterate through the nodes at the current level:
+    *   Dequeue a node.
+    *   If it's not the last node in the level, set its `next` pointer to the next node in the queue (which is its right neighbor).
+    *   Enqueue its left and right children for the next level.
+
+### Complexity
+-   **Time Complexity:** O(N), as each node is visited once.
+-   **Space Complexity:** O(W), where W is the maximum width of the tree, for the queue. For a perfect binary tree, this is O(N).
+
+This approach is often more intuitive and avoids the complexities of recursive calls across subtrees.
+
 ## Usage
 The main method demonstrates how to construct a tree, connect the next pointers, and print the results:
 
@@ -53,5 +70,3 @@ PopulatingNextRightPointersInEachNode.printInOrder(root);
 
 ## License
 See project-level license for usage and distribution terms.
-
-// ...existing code...
