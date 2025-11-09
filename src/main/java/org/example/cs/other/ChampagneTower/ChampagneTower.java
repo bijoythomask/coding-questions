@@ -1,4 +1,4 @@
-package org.example.cs.other;
+package org.example.cs.other.ChampagneTower;
 
 public class ChampagneTower {
     public double champagneTower(int poured, int query_row, int query_glass) {
