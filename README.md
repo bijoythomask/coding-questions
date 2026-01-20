@@ -33,3 +33,5 @@ This project is a comprehensive collection of coding interview questions, organi
 
 Happy coding and good luck with your interviews!
 
+update readme document under the binary tree folder with problem statement solution approach  and analysis example alternate approach
+
