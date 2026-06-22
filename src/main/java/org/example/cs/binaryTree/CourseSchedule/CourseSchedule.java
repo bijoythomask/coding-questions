@@ -1,4 +1,4 @@
-package org.example.cs.binaryTree;
+package org.example.cs.binaryTree.CourseSchedule;
 
 import java.util.*;
 

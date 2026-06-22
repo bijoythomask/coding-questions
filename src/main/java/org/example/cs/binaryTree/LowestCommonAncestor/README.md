@@ -31,6 +31,20 @@ Given the following binary tree:
 If the two nodes are 5 and 1, the LCA is 3.
 If the two nodes are 5 and 4, the LCA is 5.
 
+## Alternate Approach: Iterative with Parent Pointers
+
+An iterative approach can be used if we have a way to access the parent of each node.
+
+1.  **Store Parent Pointers**: Traverse the tree and use a hash map to store the parent of each node.
+2.  **Trace Path for `p`**: Start from node `p` and traverse upwards to the root, storing all ancestors of `p` in a set.
+3.  **Trace Path for `q`**: Start from node `q` and traverse upwards. The first ancestor of `q` that is also present in the set of `p`'s ancestors is the LCA.
+
+### Complexity
+-   **Time Complexity:** O(N) to build the parent map and O(H) for tracing the paths, resulting in O(N).
+-   **Space Complexity:** O(N) for the parent map and the set of ancestors.
+
+This approach avoids recursion but requires extra space for the parent pointers.
+
 ## Usage
 Assuming you have a TreeNode class and the LowestCommonAncestor class with a method:
 
@@ -49,4 +63,3 @@ System.out.println("LCA: " + lca.val);
 
 ## License
 See project-level license for usage and distribution terms.
-

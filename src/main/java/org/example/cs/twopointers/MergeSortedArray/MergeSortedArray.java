@@ -1,4 +1,4 @@
-package org.example.cs.twopointers;
+package org.example.cs.twopointers.MergeSortedArray;
 
 public class MergeSortedArray {
     public void merge(int[] nums1, int m, int[] nums2, int n) {

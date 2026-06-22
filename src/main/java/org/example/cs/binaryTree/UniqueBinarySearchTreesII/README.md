@@ -1,17 +1,9 @@
-# UniqueBinarySearchTreesII
+# Unique Binary Search Trees II
 
-## Problem Description
-Given an integer n, return all the structurally unique BST's (binary search trees), which has exactly n nodes of unique values from 1 to n. Return the answer in any order.
+## Problem Statement
+Given an integer `n`, return all the structurally unique BST's (binary search trees), which have exactly `n` nodes of unique values from 1 to `n`. Return the answer in any order.
 
-### Example 1:
-Input: n = 3
-Output: [[1,null,2,null,3],[1,null,3,2],[2,1,3],[3,1,null,null,2],[3,2,null,1]]
-
-### Example 2:
-Input: n = 1
-Output: [[1]]
-
-## Approach
+## Solution Approach
 The solution uses a recursive approach to construct all unique Binary Search Trees (BSTs). The core of the solution is a helper function that generates all possible BSTs for a given range of numbers, `[start, end]`.
 
 For each number `i` in the range `[start, end]`, we consider it as the root of a BST. The properties of a BST dictate that all values in the left subtree must be smaller than the root, and all values in the right subtree must be larger.
@@ -26,11 +18,21 @@ The base case for the recursion is when `start > end`, which signifies an empty 
 
 The main function initializes the process by calling the recursive helper with the range `[1, n]`.
 
-## Sample Input/Output
-### Example 1:
+## Complexity Analysis
+-   **Time Complexity:** The number of unique BSTs is given by the Catalan number, C(n). The complexity is roughly O(n * C(n)), which is exponential.
+-   **Space Complexity:** O(n * C(n)) to store the generated trees. The recursion stack depth is O(n).
+
+## Example
 **Input:** `n = 3`
 **Output:** `[[1,null,2,null,3],[1,null,3,2],[2,1,3],[3,1,null,null,2],[3,2,null,1]]`
 
-### Example 2:
-**Input:** `n = 1`
-**Output:** `[[1]]`
+## Alternate Approach: Dynamic Programming with Memoization
+
+The recursive solution can be optimized by using memoization to store the results for subproblems that have already been solved.
+
+1.  **Memoization Cache**: Use a 2D array or a hash map to store the list of generated trees for each `(start, end)` range.
+2.  **Recursive Helper**: Before computing the trees for a range, check if the result is already in the cache.
+    *   If it is, return the cached result.
+    *   If not, compute the result as in the recursive approach and store it in the cache before returning.
+
+This optimization avoids recomputing the same subproblems multiple times, which can significantly improve performance, although the overall time and space complexity remain exponential due to the nature of the problem.

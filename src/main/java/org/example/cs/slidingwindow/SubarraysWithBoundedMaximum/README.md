@@ -47,24 +47,41 @@ private int count(int[] nums, int bound) {
 -   **Input:** `nums = [2, 1, 4, 3]`, `left = 2`, `right = 3`
 -   **Output:** `3`
 -   **Explanation:**
-    1.  `count(nums, 3)`: Counts subarrays with max ≤ 3.
-        -   The subarrays are `[2]`, `[1]`, `[2, 1]`, and `[3]`. The total count is `4`.
-    2.  `count(nums, 1)` (for `left - 1`): Counts subarrays with max ≤ 1.
-        -   The only subarray is `[1]`. The total count is `1`.
-    3.  **Result:** `4 - 1 = 3`. The valid subarrays are `[2]`, `[2, 1]`, and `[3]`.
+    1.  `count(nums, 3)`: Counts subarrays with max ≤ 3. The total count is `4`. The subarrays are:
+        - `[2]`
+        - `[1]`
+        - `[2, 1]`
+        - `[3]`
+    2.  `count(nums, 1)` (for `left - 1`): Counts subarrays with max ≤ 1. The total count is `1`. The only subarray is:
+        - `[1]`
+    3.  **Result:** `4 - 1 = 3`. The valid subarrays are:
+        - `[2]`
+        - `[2, 1]`
+        - `[3]`
 
 ### Example 2
 -   **Input:** `nums = [2, 9, 2, 5, 6]`, `left = 2`, `right = 8`
 -   **Output:** `7`
 -   **Explanation:**
-    1.  `count(nums, 8)` returns `7`. (Subarrays: `[2]`, `[2]`, `[5]`, `[6]`, `[2, 5]`, `[5, 6]`, `[2, 5, 6]`)
+    1.  `count(nums, 8)` returns `7`. The subarrays are:
+        - `[2]`
+        - `[2]`
+        - `[5]`
+        - `[6]`
+        - `[2, 5]`
+        - `[5, 6]`
+        - `[2, 5, 6]`
     2.  `count(nums, 1)` returns `0`.
     3.  **Result:** `7 - 0 = 7`.
 
 ## Alternate Approach: Two Pointers
-Another efficient O(n) solution involves a single pass with two pointers. We can iterate through the array, keeping track of the count of valid subarrays ending at the current position.
-
-We use a pointer `end` to mark the end of the current valid window and `start` to mark the beginning of the window (the position after the last element > `right`). The number of valid subarrays ending at index `i` is `end - start`.
+Another efficient O(n) solution involves a single pass with two pointers. The approach is as follows:
+1.  Initialize three variables: `result` to store the total count, `start` to mark the beginning of a valid window (initialized to -1), and `end` to mark the end of a valid window (initialized to -1).
+2.  Iterate through the array with index `i`:
+    - If `nums[i]` is greater than `right`, it invalidates all subarrays ending at `i`. We update `start` to `i`, effectively starting a new window.
+    - If `nums[i]` is greater than or equal to `left`, it can be a maximum in a valid subarray. We update `end` to `i`.
+    - The number of valid subarrays ending at `i` is the size of the current valid window, which is `end - start`. We add this to our `result`.
+3.  After the loop, `result` will hold the total count of valid subarrays.
 
 ```java
 public int numSubarrayBoundedMaxTwoPointers(int[] nums, int left, int right) {

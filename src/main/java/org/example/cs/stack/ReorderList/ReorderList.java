@@ -1,4 +1,6 @@
-package org.example.cs.stack;
+package org.example.cs.stack.ReorderList;
+
+import org.example.cs.stack.ListNode;
 
 public class ReorderList {
     public void reorderList(ListNode head) {

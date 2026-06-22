@@ -1,4 +1,4 @@
-package org.example.cs.twopointers;
+package org.example.cs.twopointers.FindIndexFirstOccurrence;
 
 public class FindIndexFirstOccurrence {
     public int strStr(String haystack, String needle) {
